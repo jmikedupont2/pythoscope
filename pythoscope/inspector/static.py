@@ -140,7 +140,7 @@ def inspect_module(project, path):
 def inspect_code(project, path, code):
     try:
         tree = parse(code)
-    except ParseError, e:
+    except ParseError as e:
         log.warning("Inspection of module %s failed." % path)
         return project.create_module(path, errors=[e])
     visitor = descend(tree, ModuleVisitor)

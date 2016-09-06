@@ -13,7 +13,7 @@ from pythoscope.generator.optimizer import optimize
 from pythoscope.generator.selector import testable_objects, testable_calls
 from pythoscope.store import Class, Function, TestClass, TestMethod,\
     ModuleNotFound
-from pythoscope.compat import all, sorted
+
 from pythoscope.util import camelize, pluralize, underscore
 
 

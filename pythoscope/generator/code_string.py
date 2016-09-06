@@ -1,4 +1,4 @@
-from pythoscope.compat import any, set
+
 from pythoscope.util import union
 
 

@@ -2,11 +2,7 @@ import sys
 
 try:
     from setuptools import setup
-    # ctypes library is part of standard library since Python 2.5.
-    if sys.version_info < (2, 5):
-        install_requires = ['ctypes']
-    else:
-        install_requires = []
+    install_requires = []
     args = dict(
         entry_points = {'console_scripts': ['pythoscope = pythoscope:main']},
         install_requires = install_requires,

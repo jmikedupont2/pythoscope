@@ -1,5 +1,5 @@
 import os
-from cPickle import PicklingError
+from pickle import PicklingError
 
 from pythoscope.store import Project, Class, Function, Method, TestClass, \
      TestMethod, ModuleNotFound

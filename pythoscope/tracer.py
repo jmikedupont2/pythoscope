@@ -3,7 +3,6 @@ import re
 import sys
 import types
 
-from pythoscope.compat import any
 from pythoscope.util import compact, get_self_from_method
 
 from bytecode_tracer import BytecodeTracer, rewrite_function,\
@@ -110,7 +109,7 @@ def make_callable(code):
     if isinstance(code, str):
         code = rewrite_lnotab(compile(code, "<string>", "exec"))
         def function():
-            exec code in {}
+            exec(code in {})
         return function
     return code
 
@@ -121,8 +120,8 @@ def is_generator_exit(obj):
     except NameError:
         return False
 
-import __builtin__
-builtins_names = dir(__builtin__)
+from six.moves import builtins
+builtins_names = dir(builtins)
 
 def without_extension(path):
     return re.sub(r'.py[co]?$', '', path)
