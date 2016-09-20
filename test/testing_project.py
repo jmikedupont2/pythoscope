@@ -4,7 +4,7 @@ from pythoscope.astbuilder import EmptyCode
 from pythoscope.execution import Execution
 from pythoscope.store import Project
 
-from helper import MemoryCodeTreesManager
+from .helper import MemoryCodeTreesManager
 
 
 class TestingProject(Project):

@@ -1,8 +1,8 @@
 from pythoscope.serializer import MapObject, UnknownObject, SequenceObject,\
     BuiltinException
 
-from assertions import assert_equal
-from helper import EmptyProjectExecution
+from .assertions import assert_equal
+from .helper import EmptyProjectExecution
 
 
 __all__ = ["assert_serialized", "assert_collection_of_serialized",

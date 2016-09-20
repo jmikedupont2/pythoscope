@@ -14,9 +14,9 @@ from .store import Project, ModuleNotFound, ModuleNeedsAnalysis, \
      get_code_trees_path
 
 
-__version__ = '0.5dev'
+__version__ = '0.5'
 
-BUGTRACKER_URL = "https://bugs.launchpad.net/pythoscope"
+BUGTRACKER_URL = "https://github.com/goulu/pythoscope/issues"
 USAGE = """Pythoscope usage:
 
     %s [options] [module names...]

@@ -10,15 +10,14 @@ from pythoscope.serializer import BuiltinException, ImmutableObject,\
     SequenceObject, MapObject, LibraryObject
 from pythoscope.store import Class, Function, FunctionCall, GeneratorObject,\
     GeneratorObjectInvocation, Method, UserObject
-from pythoscope.compat import all
 from pythoscope.util import findfirst, generator_has_ended
 
-from assertions import *
-from inspector_assertions import *
-from inspector_helper import *
-from helper import ProjectInDirectory, PointOfEntryMock, EmptyProjectExecution, \
+from .assertions import *
+from .inspector_assertions import *
+from .inspector_helper import *
+from .helper import ProjectInDirectory, PointOfEntryMock, EmptyProjectExecution, \
     IgnoredWarnings, putfile, TempDirectory, CapturedLogger, noindent
-from testing_project import TestingProject
+from .testing_project import TestingProject
 
 
 ########################################################################

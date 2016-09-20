@@ -1,4 +1,4 @@
-import pickle
+import dill as pickle #betteer than pickle
 import os
 import re
 

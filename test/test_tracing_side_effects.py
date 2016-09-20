@@ -1,9 +1,9 @@
 from pythoscope.side_effect import ListAppend, ListExtend, ListInsert, ListPop,\
     GlobalRebind, GlobalRead
 
-from assertions import *
-from inspector_assertions import *
-from inspector_helper import *
+from .assertions import *
+from .inspector_assertions import *
+from .inspector_helper import *
 
 
 def function_doing_to_list(action, *args, **kwds):

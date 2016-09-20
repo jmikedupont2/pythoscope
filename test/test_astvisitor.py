@@ -1,14 +1,14 @@
 from pythoscope.astvisitor import ASTVisitor
 from pythoscope.astbuilder import parse, regenerate
 
-from assertions import *
+from .assertions import *
 
 
 class TestASTVisitorImports:
     def test_handles_simple_imports(self):
         code = "import unittest"
         def assertions(names, import_from):
-            assert_equal(["unittest"], names)
+            assert_equal(["unittest"], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)
@@ -16,7 +16,7 @@ class TestASTVisitorImports:
     def test_handles_multiple_imports(self):
         code = "import unittest, nose"
         def assertions(names, import_from):
-            assert_equal(["unittest", "nose"], names)
+            assert_equal(["unittest", "nose"], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)
@@ -24,7 +24,7 @@ class TestASTVisitorImports:
     def test_handles_deep_imports(self):
         code = "import abc.xyz.FBR"
         def assertions(names, import_from):
-            assert_equal(["abc.xyz.FBR"], names)
+            assert_equal(["abc.xyz.FBR"], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)
@@ -32,7 +32,7 @@ class TestASTVisitorImports:
     def test_handles_multiple_deep_imports(self):
         code = "import abc.xyz, abc.zyx"
         def assertions(names, import_from):
-            assert_equal(["abc.xyz", "abc.zyx"], names)
+            assert_equal(["abc.xyz", "abc.zyx"], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)
@@ -40,7 +40,7 @@ class TestASTVisitorImports:
     def test_handles_from_imports(self):
         code = "from nose import SkipTest"
         def assertions(names, import_from):
-            assert_equal(["SkipTest"], names)
+            assert_equal(["SkipTest"], list(names))
             assert_equal("nose", import_from)
 
         self._test_import(code, assertions)
@@ -48,7 +48,7 @@ class TestASTVisitorImports:
     def test_handles_multiple_from_imports(self):
         code = "from nose import SkipTest, DeprecatedTest"
         def assertions(names, import_from):
-            assert_equal(["SkipTest", "DeprecatedTest"], names)
+            assert_equal(["SkipTest", "DeprecatedTest"], list(names))
             assert_equal("nose", import_from)
 
         self._test_import(code, assertions)
@@ -56,7 +56,7 @@ class TestASTVisitorImports:
     def test_handles_deep_from_imports(self):
         code = "from nose.tools import assert_equal"
         def assertions(names, import_from):
-            assert_equal(["assert_equal"], names)
+            assert_equal(["assert_equal"], list(names))
             assert_equal("nose.tools", import_from)
 
         self._test_import(code, assertions)
@@ -64,7 +64,7 @@ class TestASTVisitorImports:
     def test_handles_imports_with_as(self):
         code = "import unittest as test"
         def assertions(names, import_from):
-            assert_equal([("unittest", "test")], names)
+            assert_equal([("unittest", "test")], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)
@@ -72,7 +72,7 @@ class TestASTVisitorImports:
     def test_handles_multiple_imports_with_as(self):
         code = "import X as Y, A as B"
         def assertions(names, import_from):
-            assert_equal([("X", "Y"), ("A", "B")], names)
+            assert_equal([("X", "Y"), ("A", "B")], list(names))
             assert_equal(None, import_from)
 
         self._test_import(code, assertions)

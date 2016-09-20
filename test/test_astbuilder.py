@@ -1,6 +1,6 @@
 from pythoscope.astbuilder import parse, regenerate
 
-from assertions import *
+from .assertions import *
 
 
 class TestParser:

@@ -1,6 +1,7 @@
 import array
 import re
 import types
+import six
 
 from pythoscope.event import Event
 from pythoscope.util import RePatternType, class_name, class_of, \
@@ -36,7 +37,7 @@ def get_human_readable_id(obj):
     mapping = {list: 'list',
                dict: 'dict',
                tuple: 'tuple',
-               unicode: 'unicode_string',
+               six.text_type: 'unicode_string',
                types.GeneratorType: 'generator'}
     objid = mapping.get(objclass)
     if objid:

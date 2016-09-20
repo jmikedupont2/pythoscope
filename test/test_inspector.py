@@ -5,8 +5,8 @@ from nose import SkipTest
 from pythoscope.inspector import inspect_project
 from pythoscope.util import generator_has_ended
 
-from assertions import *
-from helper import CapturedLogger, CapturedDebugLogger, P, ProjectInDirectory,\
+from .assertions import *
+from .helper import CapturedLogger, CapturedDebugLogger, P, ProjectInDirectory,\
     TempDirectory
 
 

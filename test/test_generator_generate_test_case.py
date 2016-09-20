@@ -13,9 +13,9 @@ from pythoscope.generator import generate_test_case
 
 from pythoscope.util import all_of_type
 
-from assertions import *
-from factories import create
-from generator_helper import put_on_timeline, create_parent_call_with_side_effects
+from .assertions import *
+from .factories import create
+from .generator_helper import put_on_timeline, create_parent_call_with_side_effects
 
 
 def filter_out_objects(events):

@@ -2,7 +2,7 @@ import sys
 
 try:
     from setuptools import setup
-    install_requires = []
+    install_requires = ['six']
     args = dict(
         entry_points = {'console_scripts': ['pythoscope = pythoscope:main']},
         install_requires = install_requires,
@@ -11,13 +11,6 @@ try:
 except ImportError:
     from distutils.core import setup
     args = dict(scripts = ['scripts/pythoscope'])
-
-# The C module doesn't need to be built for Python 2.5 and higher.
-if sys.version_info < (2, 5):
-    from distutils.core import Extension
-    ext_modules = [Extension('pythoscope._util', sources=['pythoscope/_util.c'])]
-else:
-    ext_modules = []
 
 
 from pythoscope import __version__ as VERSION
@@ -33,20 +26,19 @@ setup(
     license = 'MIT',
     url = 'http://pythoscope.org',
 
-    ext_modules = ext_modules,
-
     packages = ['pythoscope', 'pythoscope.inspector', 'pythoscope.generator',
-                'bytecode_tracer',
-                'lib2to3', 'lib2to3.pgen2'],
+                'bytecode_tracer'],
     package_data = {'pythoscope': [],
-                    'bytecode_tracer': [],
-                    'lib2to3': ['*.txt']},
+                    'bytecode_tracer': []},
 
     classifiers = [
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Software Development :: Testing',
     ],

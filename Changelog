@@ -1,6 +1,12 @@
 Changelog
 =========
 
+
+0.5.0
+-----
+* works (more or less...) under Python 3.x !
+* known bug : cannot parse "print = my_print_function"
+
 0.4.3
 -----
 

@@ -141,8 +141,8 @@ def inspect_code(project, path, code):
     try:
         tree = parse(code)
     except ParseError as e:
-        log.warning("Inspection of module %s failed." % path)
-        return project.create_module(path, errors=[e])
+        log.warning("Inspection of module %s failed with error %s" % (path,e))
+        return project.create_module(path, errors=[e]) #try to skip
     visitor = descend(tree, ModuleVisitor)
 
     # We assume that all test classes in this module has dependencies on

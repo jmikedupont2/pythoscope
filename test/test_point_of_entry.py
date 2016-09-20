@@ -5,8 +5,8 @@ from pythoscope.serializer import ImmutableObject, UnknownObject,\
 from pythoscope.store import Class, Function, FunctionCall, GeneratorObject,\
     Method, UserObject
 
-from assertions import *
-from helper import EmptyProject
+from .assertions import *
+from .helper import EmptyProject
 
 
 def inject_user_object(poe, obj, klass):
