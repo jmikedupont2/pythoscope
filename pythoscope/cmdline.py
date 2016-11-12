@@ -2,6 +2,9 @@ import getopt
 import os
 import sys
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 import logger
 
 from inspector import inspect_project, inspect_project_statically
