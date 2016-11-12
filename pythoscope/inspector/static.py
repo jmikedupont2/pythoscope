@@ -58,7 +58,7 @@ def function_code_from_definition(definition):
 
     Can raise SyntaxError if the definition is not valid.
     """
-    consts = compile_without_warnings(unindent(str(definition))).co_consts
+    consts = compile_without_warnings(unindent(unicode(definition))).co_consts
     return all_of_type(consts, types.CodeType)[0]
 
 def is_generator_definition(definition):
