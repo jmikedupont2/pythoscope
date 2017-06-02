@@ -4,3 +4,5 @@ lib2to3/PatternGrammar*.pickle
 build/
 dist/
 *.pyc
+/.project
+/.pydevproject
