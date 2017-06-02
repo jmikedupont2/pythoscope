@@ -2,7 +2,7 @@ import sys
 
 try:
     from setuptools import setup
-    install_requires = ['six']
+    install_requires = ['six','dill']
     args = dict(
         entry_points = {'console_scripts': ['pythoscope = pythoscope:main']},
         install_requires = install_requires,
