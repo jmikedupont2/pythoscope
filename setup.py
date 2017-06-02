@@ -1,17 +1,14 @@
-import sys
+import os,sys,uuid
 
-try:
-    from setuptools import setup
-    install_requires = ['six','dill']
-    args = dict(
-        entry_points = {'console_scripts': ['pythoscope = pythoscope:main']},
-        install_requires = install_requires,
-        test_suite = 'nose.collector',
-        tests_require = ['nose', 'mock', 'docutils'])
-except ImportError:
-    from distutils.core import setup
-    args = dict(scripts = ['scripts/pythoscope'])
+from setuptools import setup
+from pip.req import parse_requirements
 
+reqs = parse_requirements(
+    os.path.join(os.path.dirname(__file__), "requirements.txt"),
+    None,None, None, uuid.uuid1()
+)
+
+reqs = [str(ir.req) for ir in reqs]
 
 from pythoscope import __version__ as VERSION
 
@@ -43,5 +40,8 @@ setup(
         'Topic :: Software Development :: Testing',
     ],
 
-    **args
+    entry_points = {'console_scripts': ['pythoscope = pythoscope:main']},
+    install_requires = reqs,
+    test_suite = 'nose.collector',
+    tests_require = ['nose', 'mock', 'docutils'],
 )
