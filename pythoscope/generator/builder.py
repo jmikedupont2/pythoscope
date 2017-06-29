@@ -30,7 +30,7 @@ class UnittestTemplate(Template):
     def raises_assertion(self, exception, call):
         return combine(exception, call, "self.assertRaises(%s, %s)")
     def skip_test(self):
-        return CodeString("assert False  # TODO: implement your test here")
+        return CodeString("assert False  # implement your test here")
 
 class NoseTemplate(Template):
     def equal_assertion(self, expected, actual):
@@ -40,7 +40,7 @@ class NoseTemplate(Template):
         return addimport(combine(exception, call, "assert_raises(%s, %s)"),
                          ('nose.tools', 'assert_raises'))
     def skip_test(self):
-        return addimport(CodeString("raise SkipTest # TODO: implement your test here"),
+        return addimport(CodeString("raise SkipTest # implement your test here"),
                          ('nose', 'SkipTest'))
 
 # :: CodeString -> CodeString
