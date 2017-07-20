@@ -103,7 +103,7 @@ def init_project(path, skip_inspection=False):
         os.makedirs(pythoscope_path)
         os.makedirs(get_points_of_entry_path(path))
         os.makedirs(get_code_trees_path(path))
-    except OSError, err:
+    except OSError as err:
         fail("Couldn't initialize Pythoscope directory: %s." % err.strerror)
 
     project = Project.from_directory(path)
@@ -121,7 +121,7 @@ def generate_tests(modules, force, template):
     except PythoscopeDirectoryMissing:
         fail("Can't find .pythoscope/ directory for this project. "
              "Initialize the project with the '--init' option first.")
-    except ModuleNeedsAnalysis, err:
+    except ModuleNeedsAnalysis as err:
         if err.out_of_sync:
             fail("Tried to generate tests for test module located at %r, "
                  "but it has been modified during this run. Please try "
@@ -130,15 +130,15 @@ def generate_tests(modules, force, template):
             fail("Tried to generate tests for test module located at %r, "
                  "but it was created during this run. Please try running "
                  "pythoscope again." % err.path)
-    except ModuleNotFound, err:
+    except ModuleNotFound as err:
         if os.path.exists(err.module):
             fail("Couldn't find information on module %r. This shouldn't "
                  "happen, please file a bug report at %s." % (err.module, BUGTRACKER_URL))
         else:
             fail("File doesn't exist: %s." % err.module)
-    except ModuleSaveError, err:
+    except ModuleSaveError as err:
         fail("Couldn't save module %r: %s." % (err.module, err.reason))
-    except UnknownTemplate, err:
+    except UnknownTemplate as err:
         fail("Couldn't find template named %r. Available templates are "
              "'nose' and 'unittest'." % err.template)
 
@@ -148,7 +148,7 @@ def main():
     try:
         options, args = getopt.getopt(sys.argv[1:], "fhit:qvV",
                         ["force", "help", "init", "template=", "quiet", "verbose", "version"])
-    except getopt.GetoptError, err:
+    except getopt.GetoptError as err:
         log.error("%s\n" % err)
         print USAGE % appname
         sys.exit(1)

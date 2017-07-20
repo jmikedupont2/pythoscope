@@ -28,7 +28,7 @@ def add_test_case_to_project(project, test_class, main_snippet=None, force=False
             ensure_imports(existing_test_class, test_class.imports)
             merge_test_classes(existing_test_class, test_class, force)
             ensure_main_snippet(existing_test_class.parent, main_snippet, force)
-    except CodeTreeNotFound, ex:
+    except CodeTreeNotFound as ex:
         log.warning("Not adding %s to %s, because of a failed inspection." %\
             (test_class.name, ex.module_subpath))
 
