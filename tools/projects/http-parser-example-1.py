@@ -26,7 +26,7 @@ def main():
             assert nparsed == recved
 
             if p.is_headers_complete() and not header_done:
-                print p.get_headers()
+                print(p.get_headers())
                 header_done = True
 
             if p.is_partial_body():
@@ -35,7 +35,7 @@ def main():
             if p.is_message_complete():
                 break
 
-        print "".join(body)
+        print("".join(body))
 
     finally:
         s.close()

@@ -74,24 +74,25 @@ def benchmark_project_load_performance(modules_count=25):
         putfile(project_path, "module%s.py" % i, module)
     init_project(project_path, skip_inspection=True)
 
-    print "==> Inspecting project.."
+    print("==> Inspecting project..")
     elapsed = run_timer("inspect_project(Project('%s'))" % project_path,
                         "from pythoscope.inspector import inspect_project; from pythoscope.store import Project")
-    print "It took %f seconds to inspect." % elapsed
+    print("It took %f seconds to inspect." % elapsed)
 
-    print "==> Saving project information"
+    print("==> Saving project information")
     elapsed = run_timer("project.save()",
                         """from pythoscope.inspector import inspect_project ;\
                            from pythoscope.store import Project ;\
                            project = Project('%s') ;\
                            inspect_project(project)""" % project_path)
-    print "It took %f seconds to save the project information." % elapsed
+    print("It took %f seconds to save the project information." % elapsed)
 
-    print "==> Reading project information"
+    print("==> Reading project information")
     elapsed = run_timer("Project.from_directory('%s')" % project_path,
                         "from pythoscope.store import Project")
-    print "It took %f seconds to read project information from %s pickle." % \
+    print("It took %f seconds to read project information from %s pickle." % 
         (elapsed, human_size(os.path.getsize(get_pickle_path(project_path))))
+    )
 
     rmtree(project_path)
 

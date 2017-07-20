@@ -150,7 +150,7 @@ def main():
                         ["force", "help", "init", "template=", "quiet", "verbose", "version"])
     except getopt.GetoptError as err:
         log.error("%s\n" % err)
-        print USAGE % appname
+        print(USAGE % appname)
         sys.exit(1)
 
     force = False
@@ -161,7 +161,7 @@ def main():
         if opt in ("-f", "--force"):
             force = True
         elif opt in ("-h", "--help"):
-            print USAGE % appname
+            print(USAGE % appname)
             sys.exit()
         elif opt in ("-i", "--init"):
             init = True
@@ -172,7 +172,7 @@ def main():
         elif opt in ("-v", "--verbose"):
             log.level = logger.DEBUG
         elif opt in ("-V", "--version"):
-            print "%s %s" % (appname, __version__)
+            print("%s %s" % (appname, __version__))
             sys.exit()
 
     try:
@@ -185,7 +185,7 @@ def main():
         else:
             if not args:
                 log.error("You didn't specify any modules for test generation.\n")
-                print USAGE % appname
+                print(USAGE % appname)
             else:
                 generate_tests(args, force, template)
     except KeyboardInterrupt:

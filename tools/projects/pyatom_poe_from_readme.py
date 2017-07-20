@@ -15,4 +15,4 @@ feed.add(title="My Post",
          url="http://example.org/entry1",
          updated=datetime.datetime.utcnow())
 
-print feed.to_string()
+print(feed.to_string())
