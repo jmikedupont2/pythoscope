@@ -10,10 +10,11 @@ from pythoscope.store import Module, Class, Function, Method, CodeTree
 from pympler import heapmonitor
 
 if len(sys.argv) != 2:
-    print "usage:\n  %s application_path\n" % sys.argv[0]
-    print "application_path should point to a directory containing\n"\
-          "the project you wish to test pythoscope memory usage on.\n"\
+    print("usage:\n  %s application_path\n" % sys.argv[0])
+    print("application_path should point to a directory containing\n"
+          "the project you wish to test pythoscope memory usage on.\n"
           "It should *not* be initialized (as in pythoscope --init)."
+    )
     sys.exit(1)
 
 def setup_tracking(project):

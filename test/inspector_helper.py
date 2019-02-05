@@ -81,8 +81,8 @@ def inspect_returning_callables_and_execution(fun, ignored_functions=None):
     # Don't allow any POEs exceptions to propagate to the testing code.
     # Catch both string and normal exceptions.
     except:
-        print "Caught exception inside point of entry:", last_exception_as_string()
-        print last_traceback()
+        print("Caught exception inside point of entry:", last_exception_as_string())
+        print(last_traceback())
 
     return project.get_callables(), execution
 

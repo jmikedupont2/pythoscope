@@ -26,7 +26,7 @@ class GatheringResults(object):
     total = property(lambda s: s.passed + s.skipped + s.errors + s.failures)
 
 def notify(message):
-    print '*'*8, message
+    print('*'*8, message)
 
 def check_environment():
     notify("Checking environment...")
@@ -154,13 +154,13 @@ def run_snippet(snippet, project_dir):
     notify("Copying and running snippet %s..." % snippet)
     shutil.copy(os.path.join(PREFIX, snippet), project_dir)
     status, output = commands.getstatusoutput("(cd %s ; python2.6 %s)" % (project_dir, snippet))
-    print output
+    print(output)
     notify("Done.")
 
 def generate_tests_for_file(project_dir, appfile):
     notify("Generating tests for %s..." % appfile)
     status, output = commands.getstatusoutput("pythoscope --verbose -t nose %s" % os.path.join(project_dir, appfile))
-    print output
+    print(output)
     if contains_dynamic_inspection_error(output):
         raise GatheringError("Failed at dynamic inspection.")
     if status != 0:
@@ -173,9 +173,9 @@ def contains_dynamic_inspection_error(output):
 def run_nosetests(project_dir, test_path):
     notify("Running nosetests on the generated test module...")
     command = "PYTHONPATH=%s nosetests -w %s %s" % (project_dir, project_dir, test_path)
-    print "    $", command
+    print("    $", command)
     status, output = commands.getstatusoutput(command)
-    print output
+    print(output)
     if status not in [0, 256]:
         raise GatheringError("Failed during test run: nosetests exited with code=%d." % status)
     counts = get_test_counts(output)
@@ -193,9 +193,9 @@ def get_test_counts(output):
 def run_nosetests_with_coverage(project_dir, test_path, cover_package):
     notify("Running nosetests with coverage on the generated test module...")
     command = "PYTHONPATH=%s nosetests --with-coverage --cover-package=%s -w %s %s" % (project_dir, cover_package, project_dir, test_path)
-    print "    $", command
+    print("    $", command)
     status, output = commands.getstatusoutput(command)
-    print output
+    print(output)
     if status not in [0, 256]:
         raise GatheringError("Failed during test run: nosetests+coverage exited with code=%d." % status)
     coverage = extract_coverage_percent(output)
@@ -280,20 +280,21 @@ def main():
         try:
             results.append(gather_metrics_from_project(**project))
         except GatheringError, e:
-            print e.args[0]
+            print(e.args[0])
             results.append(None)
     for project, result in zip(projects, results):
-        print
-        print project['project']
-        print "-"*40
+        print()
+        print(project['project'])
+        print("-"*40)
         if result:
-            print "%d LOC, %d functions, %d classes, %d methods" % \
+            print("%d LOC, %d functions, %d classes, %d methods" % 
                 (result.loc, result.functions, result.classes, result.methods)
-            print "%d test cases:" % result.total
-            print "  %d passing" % result.passed
-            print "  %d failing" % (result.failures + result.errors)
-            print "  %d stubs" % result.skipped
-            print "%s coverage" % result.coverage
+            )
+            print("%d test cases:" % result.total)
+            print("  %d passing" % result.passed)
+            print("  %d failing" % (result.failures + result.errors))
+            print("  %d stubs" % result.skipped)
+            print("%s coverage" % result.coverage)
 
 if __name__ == '__main__':
     sys.exit(main())
