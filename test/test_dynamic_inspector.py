@@ -139,7 +139,8 @@ def function_calling_another_with_varargs_only():
     function()
 
 def function_calling_another_with_nested_arguments():
-    def function((a, b), c):
+    def function(a1, c):
+        (a, b) = a1
         return [c, b, a]
     function((1, 2), 3)
 
@@ -214,7 +215,8 @@ def function_calling_method_which_calls_other_method():
     Class().method()
 
 def function_changing_its_argument_binding():
-    def function((a, b), c):
+    def function(a1, c):
+        (a, b) = a1
         a = 7
         return (c, b, a)
     function((1, 2), 3)
@@ -812,9 +814,12 @@ class TestRaisedExceptions(IgnoredWarnings):
 
     def test_handles_multiargument_exceptions_raised_by_the_interpreter_like_syntax_error(self):
         def causes_interpreter_to_raise_syntax_error():
-            def raising_syntax_error(): exec 'a b c\n'
-            try: raising_syntax_error()
-            except: pass
+            def raising_syntax_error():
+                exec('a b c\n')
+            try:
+                raising_syntax_error()
+            except:
+                pass
         # Versions of Python up to 2.4 used None for a filename in syntax
         # errors invoked by exec.
         if sys.version_info >= (2, 5):
@@ -837,7 +842,7 @@ class TestRaisedExceptions(IgnoredWarnings):
 
         def raises_string_exception():
             def raising_string_exception():
-                raise "deprecated"
+                raise ("deprecated")
             raising_string_exception()
         function = inspect_returning_single_callable(raises_string_exception)
         call = assert_one_element_and_return(function.calls)
@@ -851,7 +856,7 @@ class TestRaisedExceptions(IgnoredWarnings):
 
         def raises_string_exception():
             def raising_string_exception():
-                raise "this is not a drill", True
+                raise ("this is not a drill", True)
             raising_string_exception()
         function = inspect_returning_single_callable(raises_string_exception)
         call = assert_one_element_and_return(function.calls)
@@ -1002,7 +1007,7 @@ class TestExceptionsPassedAsValues:
             def returning_name_error():
                 try:
                     no_such_variable # raises NameError
-                except NameError, e:
+                except NameError as e:
                     return e
             returning_name_error()
         call = inspect_returning_single_call(function)

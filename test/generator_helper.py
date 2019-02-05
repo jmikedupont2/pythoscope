@@ -1,6 +1,6 @@
 from pythoscope.store import FunctionCall
 
-from factories import create
+from .factories import create
 
 
 def put_on_timeline(*objects):

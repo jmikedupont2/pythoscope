@@ -1,2 +1,4 @@
 six
 dill
+nose
+factory_boy

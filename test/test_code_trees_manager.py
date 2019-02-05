@@ -8,7 +8,7 @@ from pythoscope.code_trees_manager import CodeTreeNotFound, \
 from pythoscope.store import CodeTree, Module
 
 from .assertions import *
-from helper import TempDirectory
+from .helper import TempDirectory
 
 
 class TestFilesystemCodeTreesManager(TempDirectory):
