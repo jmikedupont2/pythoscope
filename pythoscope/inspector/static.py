@@ -2,9 +2,6 @@ import re
 import types
 import sys
 
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 from pythoscope.astvisitor import descend, ASTVisitor
 from pythoscope.astbuilder import parse, ParseError
 from pythoscope.logger import log

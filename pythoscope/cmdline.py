@@ -2,8 +2,6 @@ import getopt
 import os
 import sys
 from os.path import samefile
-import logger
-
 from . import logger
 
 from .inspector import inspect_project, inspect_project_statically
@@ -12,10 +10,6 @@ from .logger import log
 from .store import Project, ModuleNotFound, ModuleNeedsAnalysis, \
      ModuleSaveError, get_pythoscope_path, get_points_of_entry_path, \
      get_code_trees_path
-
-
-reload(sys)
-sys.setdefaultencoding("utf-8")
 
 __version__ = '0.5'
 

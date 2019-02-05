@@ -1,14 +1,7 @@
 import os,sys,uuid
 
 from setuptools import setup
-from pip.req import parse_requirements
-
-reqs = parse_requirements(
-    os.path.join(os.path.dirname(__file__), "requirements.txt"),
-    None,None, None, uuid.uuid1()
-)
-
-reqs = [str(ir.req) for ir in reqs]
+reqs = ['six', 'dill']
 
 from pythoscope import __version__ as VERSION
 
