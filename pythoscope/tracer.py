@@ -37,7 +37,7 @@ def is_class_definition(frame):
     try:
         # Old-style classes are of type "ClassType", while new-style
         # classes or of type "type".
-        return callable_type(frame) in [types.ClassType, type]
+        return callable_type(frame) in [type, type]
     except KeyError:
         return frame.f_code.co_names[:2] == ('__name__', '__module__')
 
@@ -68,7 +68,7 @@ def get_method_information(frame):
         method = getattr(self, methodname)
 
         # This isn't a call on the first argument's method.
-        if not method.im_func.func_code == frame.f_code:
+        if not method.__func__.__code__ == frame.f_code:
             raise NotMethodFrame
 
         # Remove the "self" argument.
@@ -97,7 +97,7 @@ def resolve_args(names, locals):
     result = []
     for i, name in enumerate(names):
         if isinstance(name, list):
-            result.extend(zip(name, locals['.%d' % i]))
+            result.extend(list(zip(name, locals['.%d' % i])))
         else:
             result.append((name, locals[name]))
     return result
@@ -169,13 +169,13 @@ class StandardTracer(object):
 
     def setup(self, code):
         self.top_level_function = make_callable(code)
-        self.sys_modules = sys.modules.keys()
+        self.sys_modules = list(sys.modules.keys())
 
     def teardown(self):
         # Revert any changes to sys.modules.
         # This unfortunatelly doesn't include changes to the modules' state itself.
         # Replaced module instances in sys.modules are also not reverted.
-        modnames = [m for m in sys.modules.keys() if m not in self.sys_modules]
+        modnames = [m for m in list(sys.modules.keys()) if m not in self.sys_modules]
         for modname in modnames:
             del sys.modules[modname]
 
@@ -287,7 +287,7 @@ class StandardTracer(object):
         if code.co_name in IGNORED_NAMES:
             return True
         if self.top_level_function is not None \
-                and code is self.top_level_function.func_code:
+                and code is self.top_level_function.__code__:
             return True
         return False
 

@@ -10,6 +10,7 @@ import types
 import warnings
 
 from pythoscope.py_wrapper_object import get_wrapper_self
+from functools import reduce
 
 
 def compact(lst):
@@ -144,18 +145,18 @@ def max_by_not_zero(func, collection):
     def annotate(element):
         return (func(element), element)
 
-    highest = max(map(annotate, collection),key=lambda pair:pair[0])
+    highest = max(list(map(annotate, collection)),key=lambda pair:pair[0])
     if highest and highest[0] > 0:
         return highest[1]
     else:
         return None
 
 def get_names(objects):
-    return list(map(lambda c: c.name, objects))
+    return list([c.name for c in objects])
 
 def map_values(function, dictionary):
     new_dictionary = {}
-    for key, value in dictionary.iteritems():
+    for key, value in dictionary.items():
         new_dictionary[key] = function(value)
     return new_dictionary
 
@@ -242,7 +243,7 @@ def key_for_value(dictionary, value):
     'b'
     >>> key_for_value({}, 1)
     """
-    for k, v in dictionary.iteritems():
+    for k, v in dictionary.items():
         if v == value:
             return k
 

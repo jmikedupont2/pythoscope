@@ -41,7 +41,7 @@ def add_and_update_modules(project):
     return count
 
 def remove_deleted_points_of_entry(project):
-    names = [poe.name for poe in project.points_of_entry.values() if not poe.exists()]
+    names = [poe.name for poe in list(project.points_of_entry.values()) if not poe.exists()]
     for name in names:
         project.remove_point_of_entry(name)
 
@@ -70,7 +70,7 @@ def inspect_project_dynamically(project):
                     "not reliable on Python 2.4 and lower. Please compile the "
                     "_util module or use Python 2.5 or higher.")
 
-    for poe in project.points_of_entry.values():
+    for poe in list(project.points_of_entry.values()):
         try:
             log.info("Inspecting point of entry %s." % poe.name)
             dynamic.inspect_point_of_entry(poe)

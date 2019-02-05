@@ -147,7 +147,7 @@ class Project(object):
         """
         module = Module(subpath=self._extract_subpath(path), project=self, **kwds)
 
-        if module.subpath in self._modules.keys():
+        if module.subpath in list(self._modules.keys()):
             self._replace_references_to_module(module)
             # Don't need to forget the old CallTree, as the creation of
             # the Module instance above overwrites it anyway.
@@ -242,10 +242,10 @@ class Project(object):
         raise ModuleNotFound(module)
 
     def get_modules(self):
-        return self._modules.values()
+        return list(self._modules.values())
 
     def iter_modules(self):
-        return self._modules.values()
+        return list(self._modules.values())
 
     def iter_classes(self):
         for module in self.iter_modules():
@@ -432,7 +432,7 @@ class Class(ObjectInModule):
         traced_method_names = self.get_traced_method_names()
         def is_untraced(method):
             return method.name not in traced_method_names
-        return filter(is_untraced, self.methods)
+        return list(filter(is_untraced, self.methods))
 
     def find_method_by_name(self, name):
         for method in self.methods:
@@ -578,7 +578,7 @@ class Call(Event):
     and UserObject.get_external_calls().
     """
     def __init__(self, definition, args, output=None, exception=None):
-        if [value for value in args.values() if not isinstance(value, SerializedObject)]:
+        if [value for value in list(args.values()) if not isinstance(value, SerializedObject)]:
             raise ValueError("Values of all arguments should be instances of SerializedObject class.")
         if output and exception:
             raise ValueError("Call should have a single point of return.")
@@ -629,7 +629,7 @@ class Call(Event):
 
     def __hash__(self):
         return hash((self.definition.name,
-                     tuple(self.input.iteritems()),
+                     tuple(self.input.items()),
                      self.output,
                      self.exception,
                      tuple(self.side_effects)))
@@ -774,10 +774,10 @@ class UserObject(Callable, SerializedObject):
         """
         def is_not_init_call(call):
             return call.definition.name != '__init__'
-        return filter(is_not_init_call, filter(self.is_external_call, self.calls))
+        return list(filter(is_not_init_call, list(filter(self.is_external_call, self.calls))))
 
     def get_init_and_external_calls(self):
-        return filter(self.is_external_call, self.calls)
+        return list(filter(self.is_external_call, self.calls))
 
     def __repr__(self):
         return "UserObject(id=%s, klass=%r)" % (id(self), self.klass.name)

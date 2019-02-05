@@ -60,9 +60,9 @@ def arguments_as_string(args, always_use_argnames=False):
         'x_equal_1'
     """
     if not always_use_argnames and len(args) == 1:
-        return object2id(args.values()[0])
+        return object2id(list(args.values())[0])
     return "_and_".join(["%s_equal_%s" % (arg, object2id(value))
-                         for arg, value in sorted(args.iteritems())])
+                         for arg, value in sorted(args.items())])
 
 def objcall2testname(object_name, args, output):
     """Generate a test method name that describes given object call.

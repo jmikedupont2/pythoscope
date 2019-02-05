@@ -55,7 +55,7 @@ def isnt_comma(node):
     return not is_leaf_of_type(node, token.COMMA)
     
 def remove_commas(nodes):
-    return filter(isnt_comma, nodes)
+    return list(filter(isnt_comma, nodes))
 
 def remove_defaults(nodes):
     ignore_next = False
@@ -75,7 +75,7 @@ def derive_class_names(node):
     if node is None:
         return []
     elif is_node_of_type(node, 'arglist'):
-        return map(derive_class_name, remove_commas(node.children))
+        return list(map(derive_class_name, remove_commas(node.children)))
     else:
         return [derive_class_name(node)]
 
@@ -120,8 +120,8 @@ def derive_import_names(node):
     if node is None:
         return None
     elif is_node_of_type(node, 'dotted_as_names', 'import_as_names'):
-        return map(derive_import_name,
-                   remove_commas(node.children))
+        return list(map(derive_import_name,
+                   remove_commas(node.children)))
     else:
         return [derive_import_name(node)]
 

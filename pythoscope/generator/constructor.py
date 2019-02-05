@@ -40,14 +40,14 @@ def type_as_string(obj):
     set(['types'])
     """
     if isinstance(obj, list):
-        return list_of(map(type_as_string, obj)) # TODO join preserving code strings attributes
+        return list_of(list(map(type_as_string, obj))) # TODO join preserving code strings attributes
     type2import = {'time': ('datetime', 'time'),
                    'datetime': ('datetime', 'datetime'),
                    'date': ('datetime', 'date')}
     cs = CodeString(obj.type_name)
     if cs.startswith('types.'):
         return addimport(cs, 'types')
-    elif str(cs) in type2import.keys():
+    elif str(cs) in list(type2import.keys()):
         # TODO it should be done in the serializer
         return addimport(cs, type2import[str(cs)])
     return cs
@@ -159,14 +159,14 @@ def call_as_string_for(object_name, args, definition, assigned_names={}):
         try:
             value = getvalue(argname)
             if argname.startswith("**"):
-                if value in assigned_names.keys():
+                if value in list(assigned_names.keys()):
                     kwarg = CodeString("**%s" % assigned_names[value])
                 else:
                     for karg, kvalue in map_as_kwargs(value):
                         valuecs = constructor_as_string(kvalue, assigned_names)
                         keyword_args.append(combine(karg, valuecs, "%s=%s"))
             elif argname.startswith("*"):
-                if value in assigned_names.keys():
+                if value in list(assigned_names.keys()):
                     vararg = CodeString("*%s" % assigned_names[value])
                 else:
                     code_strings = get_contained_objects_info(value, assigned_names)
@@ -180,7 +180,7 @@ def call_as_string_for(object_name, args, definition, assigned_names={}):
         except KeyError:
             skipped_an_arg = True
 
-    arguments = join(', ', filter(None, (positional_args + keyword_args + [vararg] + [kwarg])))
+    arguments = join(', ', [_f for _f in (positional_args + keyword_args + [vararg] + [kwarg]) if _f])
     return combine(object_name, arguments, "%s(%s)")
 
 # :: (string, dict, {SerializedObject: str}) -> CodeString
@@ -221,7 +221,7 @@ def call_as_string(object_name, args, assigned_names={}):
         'merge(seq1=alist, seq2=[1, 2, 3])'
     """
     arguments = []
-    for arg, value in sorted(args.iteritems()):
+    for arg, value in sorted(args.items()):
         constructor = constructor_as_string(value, assigned_names)
         arguments.append(combine(arg, constructor, template="%s=%s"))
     return combine(object_name, join(", ", arguments), template="%s(%s)")
@@ -301,8 +301,8 @@ def constructor_as_string(object, assigned_names={}):
         "Element('tag', 'uri', 'prefix')"
     """
     if isinstance(object, list):
-        return list_of(map(constructor_as_string, object))
-    elif assigned_names.has_key(object):
+        return list_of(list(map(constructor_as_string, object)))
+    elif object in assigned_names:
         return CodeString(assigned_names[object])
     elif isinstance(object, UserObject):
         # Look for __init__ call and base the constructor on that.

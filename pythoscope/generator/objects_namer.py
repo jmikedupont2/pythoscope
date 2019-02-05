@@ -27,7 +27,7 @@ def get_next_name(names, base):
         return name.startswith(base)
     def get_index(name):
         return int(name[base_length:])
-    return base + str(max(map(get_index, filter(has_right_base, names))) + 1)
+    return base + str(max(list(map(get_index, list(filter(has_right_base, names))))) + 1)
 
 # :: SerializedObject, {SerializedObject: str}, bool -> None
 def assign_name_to_object(obj, assigned_names, rename=True):
@@ -36,7 +36,7 @@ def assign_name_to_object(obj, assigned_names, rename=True):
     May reassign an existing name for an object as a side effect, unless
     `rename` is False.
     """
-    if assigned_names.has_key(obj):
+    if obj in assigned_names:
         return
     base = get_name_base_for_object(obj)
     other_obj = key_for_value(assigned_names, base)
@@ -46,9 +46,9 @@ def assign_name_to_object(obj, assigned_names, rename=True):
         if rename:
             assigned_names[other_obj] = base+"1"
         assigned_names[obj] = base+"2"
-    elif base+"1" in assigned_names.values():
+    elif base+"1" in list(assigned_names.values()):
         # We have some objects already numbered, insert a name with a new index.
-        assigned_names[obj] = get_next_name(assigned_names.values(), base)
+        assigned_names[obj] = get_next_name(list(assigned_names.values()), base)
     else:
         # It's the first object with that base.
         assigned_names[obj] = base
@@ -72,4 +72,4 @@ def name_objects_on_timeline(events):
         if isinstance(event, SerializedObject):
             return Assign(names[event], event, event.timestamp)
         return event
-    return map(map_object_to_assign, events)
+    return list(map(map_object_to_assign, events))

@@ -14,11 +14,11 @@ def sorted_by_timestamp(objects):
 
 # :: ([Event], int) -> [Event]
 def older_than(events, reference_timestamp):
-    return filter(lambda e: e.timestamp < reference_timestamp, events)
+    return [e for e in events if e.timestamp < reference_timestamp]
 
 # :: ([Event], int) -> [Event]
 def newer_than(events, reference_timestamp):
-    return filter(lambda e: e.timestamp > reference_timestamp, events)
+    return [e for e in events if e.timestamp > reference_timestamp]
 
 # :: Call -> Call
 def top_caller(call):
@@ -67,7 +67,7 @@ def calls_before(call):
 
 # :: [Call] -> [SideEffect]
 def side_effects_of(calls):
-    return flatten(map(lambda c: c.side_effects, calls))
+    return flatten([c.side_effects for c in calls])
 
 # :: Call -> [SideEffect]
 def side_effects_before(call):
@@ -75,7 +75,7 @@ def side_effects_before(call):
 
 # :: [SideEffect] -> [SerializedObject]
 def objects_affected_by_side_effects(side_effects):
-    return flatten(map(lambda se: se.affected_objects, side_effects))
+    return flatten([se.affected_objects for se in side_effects])
 
 # :: [Event] -> [SerializedObject]
 def resolve_dependencies(events):
@@ -84,7 +84,7 @@ def resolve_dependencies(events):
         return all_of_type(objs, SerializedObject) + get_contained_objects(objs)
     def get_contained_objects(obj):
         if isinstance(obj, list):
-            return flatten(map(get_contained_objects, obj))
+            return flatten(list(map(get_contained_objects, obj)))
         if obj in events_so_far:
             return []
         else:
@@ -100,10 +100,10 @@ def resolve_dependencies(events):
         elif isinstance(obj, UserObject):
             return get_contained_objects(obj.get_init_call() or [])
         elif isinstance(obj, (FunctionCall, MethodCall, GeneratorObjectInvocation)):
-            return get_those_and_contained_objects(obj.input.values())
+            return get_those_and_contained_objects(list(obj.input.values()))
         elif isinstance(obj, GeneratorObject):
             if obj.is_activated():
-                return get_those_and_contained_objects(obj.args.values() + obj.calls)
+                return get_those_and_contained_objects(list(obj.args.values()) + obj.calls)
             return []
         elif isinstance(obj, SideEffect):
             return get_those_and_contained_objects(list(obj.affected_objects))

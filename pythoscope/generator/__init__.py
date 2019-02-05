@@ -173,7 +173,7 @@ class TestGenerator(object):
             return TestMethod(name=name, code=find_method_code(code, name))
         return TestClass(name=class_name,
                          code=code,
-                         test_cases=map(methoddesc2testmethod, method_descriptions),
+                         test_cases=list(map(methoddesc2testmethod, method_descriptions)),
                          imports=self.imports,
                          associated_modules=[module])
 

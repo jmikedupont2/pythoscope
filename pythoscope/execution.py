@@ -69,7 +69,7 @@ class Execution(object):
         self.call_graph = None
 
     def destroy_references(self):
-        for obj in itertools.chain(self.captured_calls, self.captured_objects.values()):
+        for obj in itertools.chain(self.captured_calls, list(self.captured_objects.values())):
             # Method calls will also be erased, implicitly during removal of
             # their UserObjects.
             if isinstance(obj, UserObject):
@@ -192,7 +192,7 @@ class Execution(object):
 
     # :: (str, *object) -> SideEffect
     def create_side_effect(self, klass, *args):
-        return klass(*map(self.serialize, args))
+        return klass(*list(map(self.serialize, args)))
 
     # :: (object, callable) -> SerializedObject | None
     def _retrieve_or_capture(self, obj, capture_callback):
@@ -226,7 +226,7 @@ class Execution(object):
         self._preserved_objects.append(obj)
 
     def iter_captured_generator_objects(self):
-        return all_of_type(self.captured_objects.values(), GeneratorObject)
+        return all_of_type(list(self.captured_objects.values()), GeneratorObject)
 
     def remove_call_from_call_graph(self, call_to_remove):
         assert_argument_type(call_to_remove, Call)

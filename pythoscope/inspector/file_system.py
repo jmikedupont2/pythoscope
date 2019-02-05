@@ -6,7 +6,7 @@ def python_modules_below(path):
         return path.endswith(".py")
     def not_vcs_file(path):
         return not set(path.split(os.path.sep)).intersection(VCS_PATHS)
-    return filter(not_vcs_file, filter(is_python_module, rlistdir(path)))
+    return list(filter(not_vcs_file, list(filter(is_python_module, rlistdir(path)))))
 
 def rlistdir(path):
     """Resursive directory listing. Yield all files below given path,

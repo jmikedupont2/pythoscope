@@ -8,7 +8,7 @@ from pythoscope.util import RePatternType, class_name, class_of, \
     module_name, regexp_flags_as_string, string2id, underscore
 
 # Filter out private attributes, like __doc__, __name__ and __package__.
-BUILTIN_EXCEPTION_TYPES = set([v for k,v in Exception.__dict__.items() if not k.startswith('_')])
+BUILTIN_EXCEPTION_TYPES = set([v for k,v in list(Exception.__dict__.items()) if not k.startswith('_')])
 
 # Exceptions with special semantics for the `args` attribute.
 # See <http://docs.python.org/library/exceptions.html#exceptions.EnvironmentError>
@@ -49,9 +49,9 @@ def get_human_readable_id(obj):
     elif isinstance(obj, RePatternType):
         return "%s_pattern" % string2id(obj.pattern)
     elif isinstance(obj, types.FunctionType):
-        if obj.func_name == '<lambda>':
+        if obj.__name__ == '<lambda>':
             return "function"
-        return "%s_function" % obj.func_name
+        return "%s_function" % obj.__name__
     else:
         # str() may raise an exception.
         try:
@@ -162,7 +162,7 @@ class ImmutableObject(SerializedObject):
         >>> imports == set(['re'])
         True
         """
-        if isinstance(obj, (int, long, float, str, unicode, types.NoneType)):
+        if isinstance(obj, (int, float, str, type(None))):
             # Bultin types has very convienient representation.
             return repr(obj), set()
         elif isinstance(obj, RePatternType):
@@ -172,7 +172,7 @@ class ImmutableObject(SerializedObject):
             else:
                 return ('re.compile(%r)' % obj.pattern, set(['re']))
         elif isinstance(obj, types.FunctionType):
-            function = obj.func_name
+            function = obj.__name__
             module = obj.__module__
             return (function, set([(module, function)]))
         else:
@@ -220,7 +220,7 @@ class LibraryObject(SerializedObject):
         con, argnames, imp = self.type_formats_with_imports[id_of_class_of(obj)]
 
         self.constructor_format = con
-        self.arguments = map(serialize, [getattr(obj, a, None) for a in argnames])
+        self.arguments = list(map(serialize, [getattr(obj, a, None) for a in argnames]))
         self.imports = imp
 
         # Arguments were serialized first, before a call to super, so that they
@@ -261,7 +261,7 @@ class SequenceObject(CompositeObject):
     def __init__(self, obj, serialize):
         # Serialize the parts first and only after that call super, so that
         # the parts get a lower timestamp than the whole object.
-        self.contained_objects = map(serialize, obj)
+        self.contained_objects = list(map(serialize, obj))
 
         CompositeObject.__init__(self, obj)
 
@@ -286,7 +286,7 @@ class MapObject(CompositeObject):
     def __init__(self, obj, serialize):
         # Serialize the parts first and only after that call super, so that
         # the parts get a lower timestamp than the whole object.
-        self.mapping = [(serialize(k), serialize(v)) for k,v in obj.items()]
+        self.mapping = [(serialize(k), serialize(v)) for k,v in list(obj.items())]
 
         CompositeObject.__init__(self, obj)
 
@@ -307,7 +307,7 @@ class BuiltinException(CompositeObject):
     def __init__(self, obj, serialize):
         CompositeObject.__init__(self, obj)
 
-        self.args = map(serialize, obj.args)
+        self.args = list(map(serialize, obj.args))
         self.constructor_format = "%s(%%s)" % class_name(obj)
         self.imports = set()
 
@@ -317,9 +317,9 @@ class BuiltinException(CompositeObject):
 def is_immutable(obj):
     # Bool class is a subclass of int, so True and False are included in this
     # condition.
-    if isinstance(obj, (float, int, long, str, unicode, types.NoneType, RePatternType)):
+    if isinstance(obj, (float, int, str, type(None), RePatternType)):
         return True
-    elif isinstance(obj, types.FunctionType) and obj.func_name != '<lambda>':
+    elif isinstance(obj, types.FunctionType) and obj.__name__ != '<lambda>':
         return True
     return False
 
@@ -328,7 +328,7 @@ def id_of_class_of(obj):
     return (klass.__module__, klass.__name__)
 
 def is_library_object(obj):
-    return id_of_class_of(obj) in LibraryObject.type_formats_with_imports.keys()
+    return id_of_class_of(obj) in list(LibraryObject.type_formats_with_imports.keys())
 
 def is_mapping(obj):
     return type(obj) in [dict]

@@ -132,7 +132,7 @@ def generate_test_contents(events, template):
         if isinstance(event, Assign):
             line = variable_assignment_line(event.name, event.obj, already_assigned_names)
         elif isinstance(event, BindingChange):
-            if event.name.obj in already_assigned_names.keys():
+            if event.name.obj in list(already_assigned_names.keys()):
                 already_assigned_names[event.obj] = code_string_from_object_attribute_reference(event.name, already_assigned_names)
             continue # This is not a real test line, so just go directly to the next line.
         elif isinstance(event, EqualAssertionLine):

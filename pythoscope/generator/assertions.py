@@ -92,7 +92,7 @@ def test_timeline_for_user_object(execution_events, user_object):
         call_return_timestamp = last_call_action_timestamp(init_call)
         return [RaisesAssertionLine(init_call.exception, MethodCallContext(init_call, user_object), call_return_timestamp+0.25)]
 
-    timeline = give_context_to_method_calls(compact([init_call]) + flatten(map(lambda call: test_timeline_for_call(execution_events, call), external_calls)), user_object)
+    timeline = give_context_to_method_calls(compact([init_call]) + flatten([test_timeline_for_call(execution_events, call) for call in external_calls]), user_object)
 
     if init_call and len(external_calls) == 0:
         timeline.append(CommentLine("# Make sure it doesn't raise any exceptions.", timeline[-1].timestamp))
@@ -121,7 +121,7 @@ def last_call_action_timestamp(call):
     3
     """
     if isinstance(call, GeneratorObject):
-        return max(map(last_call_action_timestamp, call.calls))
+        return max(list(map(last_call_action_timestamp, call.calls)))
     # Either last action of a subcall or last side effect should be taken into
     # account here.
     last_subcall_action_timestamp = 0
@@ -148,7 +148,7 @@ def give_context_to_method_calls(events, user_object):
             return MethodCallContext(event, user_object)
         else:
             return event
-    return map(contextize, events)
+    return list(map(contextize, events))
 
 # :: ([Event], [Event], Call|GeneratorObject) -> None
 def add_test_events_for_output(events, execution_events, call):
@@ -239,7 +239,7 @@ def replace(alist, old_element, new_element):
         if element is old_element:
             return new_element
         return element
-    return map(pass_or_replace, alist)
+    return list(map(pass_or_replace, alist))
 
 # :: (SideEffect, SerializedObject, SerializedObject) -> SideEffect
 def copy_side_effects(side_effects, old_obj, new_obj):
@@ -280,7 +280,7 @@ def enumerate_events(objs):
         object are composite themselves.
         """
         if isinstance(obj, list):
-            return flatten(map(get_contained_events, obj))
+            return flatten(list(map(get_contained_events, obj)))
         # Lists are unhashable anyway, so we don't remember them.
         if obj in events_so_far:
             return []
@@ -302,13 +302,13 @@ def enumerate_events(objs):
         elif isinstance(obj, UserObject):
             return get_contained_events(obj.get_init_and_external_calls())
         elif isinstance(obj, (FunctionCall, MethodCall, GeneratorObjectInvocation)):
-            ret = get_those_and_contained_events(obj.input.values() + list(obj.side_effects))
+            ret = get_those_and_contained_events(list(obj.input.values()) + list(obj.side_effects))
             if obj.caller:
                 ret += side_effects_before_and_affected_objects(obj)
             return ret
         elif isinstance(obj, GeneratorObject):
             if obj.is_activated():
-                return get_those_and_contained_events(obj.args.values()) +\
+                return get_those_and_contained_events(list(obj.args.values())) +\
                     get_contained_events(obj.calls)
             else:
                 return []
@@ -352,7 +352,7 @@ def include_requirements(test_events, execution_events):
                 # unless it was needed earlier.
                 if new_event.value not in new_events:
                     ignored_objects.append(new_event.value)
-    return filter(lambda e: e not in ignored_objects, new_events + test_events)
+    return [e for e in new_events + test_events if e not in ignored_objects]
 
 # :: (Event, [Event], int) -> bool
 def used_later_than(event, timeline, timestamp):
@@ -384,7 +384,7 @@ def fix_tests_using_call_outputs(timeline):
                 isinstance(event.actual, (MethodCallContext, Call)) and \
                 event.actual.output.timestamp > event.actual.timestamp and \
                 used_later_than(event.actual.output, timeline, event.timestamp):
-            varname = name.next()
+            varname = next(name)
             yield Assign(varname, event.actual, event.actual.timestamp-0.0001)
             event.actual = varname
             yield event
@@ -396,14 +396,14 @@ def explicit_calls(event):
     events_so_far = set()
     def ec(event):
         if isinstance(event, list):
-            return flatten(map(ec, event))
+            return flatten(list(map(ec, event)))
         # Avoid infinite recursion.
         if event in events_so_far:
             return []
         else:
             events_so_far.add(event)
         if isinstance(event, Call):
-            return [event] + ec(event.subcalls) + ec(event.input.values())
+            return [event] + ec(event.subcalls) + ec(list(event.input.values()))
         elif isinstance(event, Callable):
             return ec(event.calls)
         elif isinstance(event, EqualAssertionLine) and isinstance(event.actual, (Call, MethodCallContext)):

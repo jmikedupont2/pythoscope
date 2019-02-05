@@ -8,7 +8,7 @@ class MissingSideEffectType(Exception):
 
 known_side_effects = {}
 def register_side_effect_type(trigger, klass):
-    if known_side_effects.has_key(trigger):
+    if trigger in known_side_effects:
         raise ValueError("Side effect for trigger %r already registered by %r." %\
                              (trigger, known_side_effects[trigger]))
     known_side_effects[trigger] = klass
@@ -27,8 +27,7 @@ class MetaSideEffect(type):
         if hasattr(cls, 'trigger'):
             register_side_effect_type(cls.trigger, cls)
 
-class SideEffect(Event):
-    __metaclass__ = MetaSideEffect
+class SideEffect(Event, metaclass=MetaSideEffect):
     def __init__(self, affected_objects, only_referenced_objects):
         super(SideEffect, self).__init__()
         self.affected_objects = affected_objects
@@ -73,7 +72,7 @@ class BuiltinMethodWithPositionArgsSideEffect(SideEffect):
         self.args = args
 
     def args_mapping(self):
-        return dict(zip(self.definition.args, self.args))
+        return dict(list(zip(self.definition.args, self.args)))
 
 class ListAppend(BuiltinMethodWithPositionArgsSideEffect):
     trigger = (list, 'append')

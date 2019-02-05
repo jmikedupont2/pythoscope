@@ -47,7 +47,7 @@ def objects_with_method_calls(events):
             return objects_from_methods(event.generator_call)
         else:
             return None
-    return compact(map(objects_from_methods, events))
+    return compact(list(map(objects_from_methods, events)))
 
 # :: [Event] -> [SerializedObject]
 def objects_with_attribute_references(events):
@@ -62,7 +62,7 @@ def objects_with_attribute_references(events):
             return objects_from_references(event.generator_call)
         else:
             return None
-    return compact(map(objects_from_references, events))
+    return compact(list(map(objects_from_references, events)))
 
 # :: [Event] -> {SerializedObject: int}
 def object_usage_counts(timeline):
