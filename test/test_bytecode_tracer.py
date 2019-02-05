@@ -364,7 +364,7 @@ class TestPrint(TestBytecodeTracer):
 
     def test_handles_normal_print_without_newline(self):
         def fun():
-            print("foo")
+            print("foo",)
         self.trace_function(fun)
         self.assert_trace(('print', "foo"))
 
