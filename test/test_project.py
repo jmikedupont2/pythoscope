@@ -1,5 +1,6 @@
 import os
-from cPickle import PicklingError
+import dill as pickle #betteer than pickle
+from pickle import PicklingError
 
 from pythoscope.store import Project, Class, Function, Method, TestClass, \
      TestMethod, ModuleNotFound
@@ -7,9 +8,9 @@ from pythoscope.inspector import remove_deleted_modules
 from pythoscope.generator.adder import add_test_case
 from pythoscope.util import get_names, read_file_contents
 
-from assertions import *
-from factories import create
-from helper import EmptyProject, P, ProjectInDirectory, ProjectWithModules, \
+from .assertions import *
+from .factories import create
+from .helper import EmptyProject, P, ProjectInDirectory, ProjectWithModules, \
     UNPICKABLE_OBJECT, TempDirectory, putdir
 
 

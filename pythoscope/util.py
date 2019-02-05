@@ -1,4 +1,4 @@
-import cPickle
+import dill as pickle #better than pickle
 import gc
 import itertools
 import operator
@@ -9,7 +9,6 @@ import traceback
 import types
 import warnings
 
-from pythoscope.compat import groupby, set, sorted
 from pythoscope.py_wrapper_object import get_wrapper_self
 
 
@@ -26,7 +25,7 @@ def counted(objects):
     >>> counted([])
     []
     """
-    return [(obj, len(list(group))) for obj, group in groupby(sorted(objects))]
+    return [(obj, len(list(group))) for obj, group in itertools.groupby(sorted(objects))]
 
 def camelize(name):
     """Covert name into CamelCase.
@@ -106,14 +105,19 @@ def file_mode(base, binary):
     return base
 
 def read_file_contents(filename, binary=False):
-    fd = file(filename, file_mode('r', binary))
-    contents = fd.read()
-    fd.close()
+    for encoding in ('utf-8',None): # TODO: clean this ugly shit
+        try:
+            with open(filename, file_mode('r', binary), encoding=encoding) as fd:
+                contents = fd.read()
+        except:
+            continue
+        else:
+            break
     return contents
 
 def write_content_to_file(string, filename, binary=False):
-    fd = file(filename, file_mode('w', binary))
-    fd.write(string)
+    with open(filename, file_mode('w', binary)) as fd:
+        fd.write(string)
     fd.close()
 
 def all_of_type(objects, type):
@@ -140,14 +144,14 @@ def max_by_not_zero(func, collection):
     def annotate(element):
         return (func(element), element)
 
-    highest = max(map(annotate, collection))
+    highest = max(map(annotate, collection),key=lambda pair:pair[0])
     if highest and highest[0] > 0:
         return highest[1]
     else:
         return None
 
 def get_names(objects):
-    return map(lambda c: c.name, objects)
+    return list(map(lambda c: c.name, objects))
 
 def map_values(function, dictionary):
     new_dictionary = {}
@@ -366,7 +370,6 @@ def regexp_flags_as_string(flags):
     return " | ".join(strings)
 
 def load_pickle_from(path):
-    fd = open(path, 'rb')
-    obj = cPickle.load(fd)
-    fd.close()
+    with open(path, 'rb') as f:
+        obj = pickle.load(f)
     return obj

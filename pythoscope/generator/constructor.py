@@ -1,4 +1,4 @@
-from pythoscope.compat import sorted
+
 from pythoscope.generator.code_string import CodeString, combine, join, \
     putinto, addimport
 from pythoscope.serializer import BuiltinException, CompositeObject,\

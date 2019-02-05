@@ -3,7 +3,7 @@ from pythoscope.execution import Execution
 from pythoscope.store import Class, Function, Method, Project
 from pythoscope.util import last_exception_as_string, last_traceback
 
-from assertions import *
+from .assertions import *
 
 __all__ = ["inspect_returning_callables", "inspect_returning_execution",
     "inspect_returning_callables_and_execution",
@@ -44,7 +44,7 @@ class ProjectMock(Project):
         object_id = (name, modulepath)
         container = self._get_container_for(type)
 
-        if not container.has_key(object_id):
+        if not object_id in container:
             container[object_id] = self._create_object(type, name)
         return container[object_id]
 

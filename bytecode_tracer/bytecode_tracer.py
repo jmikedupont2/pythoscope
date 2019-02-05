@@ -2,12 +2,13 @@ import opcode
 import os
 import re
 import sys
+import six
 
 from types import CodeType, MethodType
 
-import code_rewriting_importer
+from . import code_rewriting_importer
 
-from py_frame_object import get_value_stack_top
+from .py_frame_object import get_value_stack_top
 
 
 class ValueStack(object):
@@ -346,7 +347,7 @@ def rewrite_lnotab(code):
 def rewrite_function(function):
     if isinstance(function, MethodType):
         function = function.im_func
-    function.func_code = rewrite_lnotab(function.func_code)
+    function.func_code = rewrite_lnotab(six.get_function_code(function))
 
 def rewrite_all(objects):
     for obj in objects:

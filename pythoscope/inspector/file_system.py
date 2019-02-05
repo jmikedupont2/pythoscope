@@ -1,8 +1,5 @@
 import os
 
-from pythoscope.compat import set
-
-
 def python_modules_below(path):
     VCS_PATHS = set([".bzr", "CVS", "_darcs", ".git", ".hg", ".svn"])
     def is_python_module(path):

@@ -1,24 +1,25 @@
 import getopt
 import os
 import sys
+from os.path import samefile
+import logger
+
+from . import logger
+
+from .inspector import inspect_project, inspect_project_statically
+from .generator import add_tests_to_project, UnknownTemplate
+from .logger import log
+from .store import Project, ModuleNotFound, ModuleNeedsAnalysis, \
+     ModuleSaveError, get_pythoscope_path, get_points_of_entry_path, \
+     get_code_trees_path
+
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-import logger
+__version__ = '0.5'
 
-from inspector import inspect_project, inspect_project_statically
-from generator import add_tests_to_project, UnknownTemplate
-from logger import log
-from store import Project, ModuleNotFound, ModuleNeedsAnalysis, \
-     ModuleSaveError, get_pythoscope_path, get_points_of_entry_path, \
-     get_code_trees_path
-from compat import samefile
-
-
-__version__ = '0.5dev'
-
-BUGTRACKER_URL = "https://bugs.launchpad.net/pythoscope"
+BUGTRACKER_URL = "https://github.com/goulu/pythoscope/issues"
 USAGE = """Pythoscope usage:
 
     %s [options] [module names...]

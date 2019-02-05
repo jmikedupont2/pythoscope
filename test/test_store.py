@@ -4,8 +4,8 @@ from pythoscope.store import Class, Function, Method, Module, CodeTree,\
     TestClass, TestMethod, code_of, module_of
 from pythoscope.generator.adder import add_test_case
 
-from assertions import *
-from helper import CustomSeparator, EmptyProject
+from .assertions import *
+from .helper import CustomSeparator, EmptyProject
 
 
 class TestModule:

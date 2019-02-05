@@ -7,9 +7,9 @@ from pythoscope.generator.adder import add_test_case_to_project, add_test_case, 
 from pythoscope.inspector.static import inspect_code
 from pythoscope.store import TestClass, TestMethod
 
-from assertions import *
-from factories import create
-from helper import get_test_cases, CapturedLogger, CustomSeparator, \
+from .assertions import *
+from .factories import create
+from .helper import get_test_cases, CapturedLogger, CustomSeparator, \
     EmptyProject, ProjectWithModules
 
 

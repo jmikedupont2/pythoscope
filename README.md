@@ -1,14 +1,14 @@
+This is a fork of the excellent [pythoscope.org](http://pythoscope.org/)
+by [Matt Wiatkowski](https://github.com/mkwiatkowski/pythoscope)
+
+Support for Python 3 was added by Philippe Guglielmetti
+
+
 ## Installation
 
-Easiest way to get Pythoscope is via setuptools:
 
-    $ easy_install pythoscope
+You can get the [source from GitHub](https://github.com/goulu/pythoscope)
 
-You can also download a source package from
-[pythoscope.org](http://pythoscope.org/local--files/download/pythoscope-0.4.3.tar.gz)
-or get a copy of a development branch through github:
-
-    $ git clone git@github.com:mkwiatkowski/pythoscope.git
 
 To install the package from the source directory do:
 

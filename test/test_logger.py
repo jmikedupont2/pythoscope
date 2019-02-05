@@ -1,7 +1,7 @@
 from pythoscope.logger import log, path2modname
 
-from assertions import *
-from helper import CapturedLogger, CapturedDebugLogger, P
+from .assertions import *
+from .helper import CapturedLogger, CapturedDebugLogger, P
 
 
 class TestLogger(CapturedLogger):

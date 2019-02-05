@@ -4,7 +4,7 @@ import tempfile
 import types
 import warnings
 
-from StringIO import StringIO
+from six import StringIO
 
 from pythoscope.astbuilder import EmptyCode
 from pythoscope.execution import Execution
@@ -15,8 +15,8 @@ from pythoscope.point_of_entry import PointOfEntry
 from pythoscope.store import Function, ModuleNotFound, Project
 from pythoscope.util import read_file_contents, write_content_to_file
 
-
-UNPICKABLE_OBJECT = types.ClassType('class', (), {})
+class _: pass
+UNPICKABLE_OBJECT = _()
 
 DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'data'))
 
@@ -156,7 +156,7 @@ def tmpdir():
 def mkdirs(path):
     try:
         os.makedirs(path)
-    except OSError, err:
+    except OSError as err:
         # os.makedirs raises OSError(17, 'File exists') when last part of
         # the path exists and we don't care.
         if err.errno != 17:

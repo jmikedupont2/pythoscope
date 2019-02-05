@@ -4,8 +4,8 @@ from pythoscope.util import read_file_contents, write_content_to_file
 
 from nose import SkipTest
 
-from assertions import *
-from helper import get_test_module_contents, CapturedLogger, \
+from .assertions import *
+from .helper import get_test_module_contents, CapturedLogger, \
     ProjectInDirectory, putfile, TempDirectory, read_data
 
 

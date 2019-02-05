@@ -51,9 +51,10 @@ def is_node_of_type(node, *types):
 def leaf_value(leaf):
     return leaf.value
 
+def isnt_comma(node):
+    return not is_leaf_of_type(node, token.COMMA)
+    
 def remove_commas(nodes):
-    def isnt_comma(node):
-        return not is_leaf_of_type(node, token.COMMA)
     return filter(isnt_comma, nodes)
 
 def remove_defaults(nodes):

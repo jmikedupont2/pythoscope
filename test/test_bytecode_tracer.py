@@ -1,4 +1,4 @@
-import cPickle
+import pickle
 import dis
 import os
 import shutil
@@ -364,7 +364,7 @@ class TestPrint(TestBytecodeTracer):
 
     def test_handles_normal_print_without_newline(self):
         def fun():
-            print("foo,")
+            print("foo")
         self.trace_function(fun)
         self.assert_trace(('print', "foo"))
 
@@ -572,5 +572,5 @@ class TestImportSupportWithOtherModules(TestBytecodeTracer):
         # Before I added support for level argument of the __import__ hook,
         # under Python 2.6 it would raise:
         #   TypeError: _import_hook() takes at most 5 arguments (6 given)
-        cPickle.dumps(CodeTree(None), cPickle.HIGHEST_PROTOCOL)
+        pickle.dumps(CodeTree(None))
         self.btracer.teardown()

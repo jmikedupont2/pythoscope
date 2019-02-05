@@ -1,10 +1,9 @@
-import cPickle
+import dill as pickle #betteer than pickle
 import os
 import re
 
 from pythoscope.astbuilder import regenerate
 from pythoscope.code_trees_manager import FilesystemCodeTreesManager
-from pythoscope.compat import any, set
 from pythoscope.event import Event
 from pythoscope.localizable import Localizable
 from pythoscope.logger import log
@@ -116,7 +115,7 @@ class Project(object):
 
         # Pickling the project after saving all of its modules, so any changes
         # made by Module instances during save() will be preserved as well.
-        pickled_project = cPickle.dumps(self, cPickle.HIGHEST_PROTOCOL)
+        pickled_project = pickle.dumps(self)
 
         log.debug("Writing project pickle to disk...")
         write_content_to_file(pickled_project, self._get_pickle_path(), binary=True)
@@ -322,7 +321,7 @@ class CodeTree(object):
     def save(self, path):
         """Pickle and save this CodeTree under given path.
         """
-        pickled_code_tree = cPickle.dumps(self, cPickle.HIGHEST_PROTOCOL)
+        pickled_code_tree = pickle.dumps(self)
         write_content_to_file(pickled_code_tree, path, binary=True)
 
 def module_of(obj):
@@ -949,7 +948,7 @@ class Module(Localizable, TestSuite):
                 raise ModuleNeedsAnalysis(self.subpath, out_of_sync=True)
             try:
                 self.write(self.get_content())
-            except DirectoryException, err:
+            except DirectoryException as err:
                 raise ModuleSaveError(self.subpath, err.args[0])
             self.changed = False
 

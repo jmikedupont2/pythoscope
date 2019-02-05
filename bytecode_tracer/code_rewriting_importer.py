@@ -5,7 +5,7 @@ Based on Demo/imputil/importers.py file distributed with Python 2.x.
 """
 
 import imp
-import imputil
+from . import imputil
 import marshal
 import os
 import struct

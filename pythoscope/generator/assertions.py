@@ -1,6 +1,6 @@
 from copy import copy
 
-from pythoscope.compat import set
+
 from pythoscope.generator.dependencies import sorted_by_timestamp,\
     side_effects_before, objects_affected_by_side_effects, side_effects_of,\
     older_than, newer_than, resolve_dependencies

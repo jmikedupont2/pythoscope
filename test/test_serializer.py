@@ -1,6 +1,6 @@
 from pythoscope.serializer import get_partial_reconstructor
 
-from assertions import *
+from .assertions import *
 
 
 class TestGetPartialReconstructor:

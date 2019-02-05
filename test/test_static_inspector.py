@@ -7,8 +7,8 @@ from pythoscope.astbuilder import regenerate
 from pythoscope.store import code_of
 from pythoscope.util import get_names
 
-from assertions import *
-from helper import EmptyProject
+from .assertions import *
+from .helper import EmptyProject
 
 
 new_style_class = """

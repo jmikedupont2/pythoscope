@@ -74,7 +74,7 @@ def inspect_project_dynamically(project):
         try:
             log.info("Inspecting point of entry %s." % poe.name)
             dynamic.inspect_point_of_entry(poe)
-        except SyntaxError, err:
+        except SyntaxError as err:
             log.warning("Point of entry contains a syntax error: %s" % err)
         except:
             log.warning("Point of entry exited with error: %s" % last_exception_as_string())

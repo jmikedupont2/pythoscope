@@ -1,15 +1,14 @@
 import array
-import exceptions
 import re
 import types
+import six
 
-from pythoscope.compat import frozenset, set, sets
 from pythoscope.event import Event
 from pythoscope.util import RePatternType, class_name, class_of, \
     module_name, regexp_flags_as_string, string2id, underscore
 
 # Filter out private attributes, like __doc__, __name__ and __package__.
-BUILTIN_EXCEPTION_TYPES = set([v for k,v in exceptions.__dict__.items() if not k.startswith('_')])
+BUILTIN_EXCEPTION_TYPES = set([v for k,v in Exception.__dict__.items() if not k.startswith('_')])
 
 # Exceptions with special semantics for the `args` attribute.
 # See <http://docs.python.org/library/exceptions.html#exceptions.EnvironmentError>
@@ -38,7 +37,7 @@ def get_human_readable_id(obj):
     mapping = {list: 'list',
                dict: 'dict',
                tuple: 'tuple',
-               unicode: 'unicode_string',
+               six.text_type: 'unicode_string',
                types.GeneratorType: 'generator'}
     objid = mapping.get(objclass)
     if objid:
@@ -254,8 +253,8 @@ class SequenceObject(CompositeObject):
         list: ("[%s]", set()),
         frozenset: ("frozenset([%s])", set()),
         set: ("set([%s])", set()),
-        sets.ImmutableSet: ("ImmutableSet([%s])", set([("sets", "ImmutableSet")])),
-        sets.Set: ("Set([%s])", set([("sets", "Set")])),
+        #sets.ImmutableSet: ("ImmutableSet([%s])", set([("sets", "ImmutableSet")])),
+        #sets.Set: ("Set([%s])", set([("sets", "Set")])),
         tuple: ("(%s)", set()),
     }
 

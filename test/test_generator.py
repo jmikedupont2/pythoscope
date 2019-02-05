@@ -14,13 +14,12 @@ from pythoscope.serializer import ImmutableObject, SequenceObject
 from pythoscope.store import Class, Function, Method, ModuleNeedsAnalysis, \
     ModuleSaveError, TestClass, TestMethod, MethodCall, FunctionCall, \
     UserObject, GeneratorObject, GeneratorObjectInvocation, ModuleNotFound
-from pythoscope.compat import sets, sorted
 from pythoscope.util import read_file_contents, get_last_modification_time, \
     flatten
 
-from assertions import *
-from factories import create
-from helper import CapturedDebugLogger, CapturedLogger, P, \
+from .assertions import *
+from .factories import create
+from .helper import CapturedDebugLogger, CapturedLogger, P, \
     ProjectInDirectory, EmptyProject, TestableProject, \
     generate_single_test_module, get_test_cases, \
     EmptyProjectExecution, putfile, TempDirectory, make_fresh_serialize

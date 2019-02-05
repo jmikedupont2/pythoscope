@@ -49,7 +49,7 @@ def main():
 
     if [v for v in results.values() if v != 'OK']:
         return 1
-    return 0
+
 
 if __name__ == '__main__':
     sys.exit(main())
